@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comprehensive financial tools for savings, budgeting, debt planning, and discounts in Cambodia">
+    <title>Money Express Cambodia | Financial Tools</title>
+    <!-- Fonts: Playfair Display (Serif for elegance) and Lato (Sans-serif for clarity) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Battambang:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- ROTHSCHILD & CO INSPIRED PALETTE --- */
+        :root {
+            /* Core Brand Colors */
+            --navy-primary: #00142D;    /* Deep, almost black navy */
+            --navy-light: #1C2E4A;      /* Slightly lighter navy for hover states */
+            --gold-accent: #C0A674;     /* Muted, elegant gold/bronze */
+            --gold-dark: #A38C5E;       /* Darker gold for active states */
+
+            /* Typography Colors */
+            --text-heading: #00142D;    /* Navy for headings */
+            --text-body: #333333;       /* Dark grey for reading */
+            --text-muted: #666666;      /* Medium grey for labels */
+
+            /* Backgrounds & Borders */
+            --bg-body: #F0F2F5;         /* Light grey background for contrast with boxes */
+            --bg-card: #FFFFFF;         /* White background for boxes */
+            --border-line: #E5E5E5;     /* Light border for dividers */
+            --border-input: #CCCCCC;    /* Input bottom border */
+
+            /* Status Colors (Refined) */
+            --status-success: #2E5C48;  /* Deep forest green (less neon) */
+            --status-warning: #B45309;  /* Burnished orange */
+            --status-error: #8B0000;    /* Deep red */
+        }
+
+        /* --- GLOBAL RESET & TYPOGRAPHY --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lato', 'Battambang', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-body);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 2rem 0; /* Add padding since header is gone */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', 'Battambang', serif;
+            color: var(--text-heading);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        /* --- SECTION BOX STYLING --- */
+        .tool-section {
+            background-color: var(--bg-card);
+            margin-bottom: 2rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-line);
+            box-shadow: 0 4px 15px rgba(0, 20, 45, 0.05); /* Subtle shadow for depth */
+            border-radius: 4px; /* Slight rounding */
+        }
+
+        .tool-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Gold dash before headings */
+        .tool-section h2::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--gold-accent);
+        }
+
+        .tool-section h3 {
+            font-size: 1.4rem;
+            margin: 2rem 0 1.5rem;
+            color: var(--navy-primary);
+            font-weight: 400;
+            border-bottom: 1px solid var(--border-line);
+            padding-bottom: 0.5rem;
+        }
+
+        /* --- FORM GRID & INPUTS --- */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 0; /* Bottom border only style */
+            border: none;
+            border-bottom: 1px solid var(--border-input);
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-body);
+            background: transparent;
+            transition: border-color 0.3s ease;
+            border-radius: 0;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-bottom: 2px solid var(--navy-primary);
+        }
+
+        /* --- RESULTS AREA --- */
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #F9F9F9;
+            border-left: 4px solid var(--gold-accent);
+            display: none; /* Hidden by default until input */
+        }
+
+        .results p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed var(--border-line);
+            padding-bottom: 0.5rem;
+        }
+
+        .results p:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .results strong {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--navy-primary);
+        }
+
+        .results hr {
+            border: none;
+            border-top: 1px solid var(--gold-accent);
+            margin: 1.5rem 0;
+            opacity: 0.5;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem !important;
+            font-style: italic;
+            display: block !important;
+            border-bottom: none !important;
+        }
+
+        /* Result Context Colors (Text only) */
+        .results.error .note { color: var(--status-error); }
+        .results.warning .note { color: var(--status-warning); }
+        .results.success .note { color: var(--status-success); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            .tool-section { padding: 1.5rem; }
+            .tool-section h2 { font-size: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .results p { flex-direction: column; gap: 0.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Savings Section -->
+        <section id="savings-calculator" class="tool-section">
+            <h2>Savings Projector</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="currentSavings">Initial Capital</label>
+                    <input type="number" id="currentSavings" class="form-control" placeholder="0" min="0" oninput="calculateSavings()">
+                </div>
+                <div class="form-group">
+                    <label for="monthlyContribution">Monthly Contribution</label>
+                    <input type="number" id="monthlyContribution" class="form-control" placeholder="100" min="0" oninput="calculateSavings()">
+                </div>
+                <div class="form-group">
+                    <label for="annualInterestRate">Annual Return Rate (%)</label>
+                    <input type="number" id="annualInterestRate" class="form-control" placeholder="5.0" min="0" step="0.1" oninput="calculateSavings()">
+                </div>
+                <div class="form-group">
+                    <label for="yearsToSave">Investment Horizon (Years)</label>
+                    <input type="number" id="yearsToSave" class="form-control" placeholder="10" min="1" oninput="calculateSavings()">
+                </div>
+            </div>
+            <!-- Removed button, added oninput to fields -->
+            <div id="savingsResults" class="results"></div>
+        </section>
+
+        <!-- Budget Section -->
+        <section id="budget-tracker" class="tool-section">
+            <h2>Liquidity & Budget Analysis</h2>
+
+            <h3>Income Streams</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="monthlyIncome">Total Monthly Income</label>
+                    <input type="number" id="monthlyIncome" class="form-control" placeholder="3000" min="0" oninput="trackBudget()">
+                </div>
+            </div>
+
+            <h3>Expenditure Allocation</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="housingCost">Housing & Property</label>
+                    <input type="number" id="housingCost" class="form-control" placeholder="1000" min="0" oninput="trackBudget()">
+                </div>
+                <div class="form-group">
+                    <label for="foodCost">Provisions & Dining</label>
+                    <input type="number" id="foodCost" class="form-control" placeholder="400" min="0" oninput="trackBudget()">
+                </div>
+                <div class="form-group">
+                    <label for="transportationCost">Logistics & Transport</label>
+                    <input type="number" id="transportationCost" class="form-control" placeholder="200" min="0" oninput="trackBudget()">
+                </div>
+                <div class="form-group">
+                    <label for="utilitiesCost">Utilities & Services</label>
+                    <input type="number" id="utilitiesCost" class="form-control" placeholder="150" min="0" oninput="trackBudget()">
+                </div>
+                <div class="form-group">
+                    <label for="entertainmentCost">Leisure</label>
+                    <input type="number" id="entertainmentCost" class="form-control" placeholder="100" min="0" oninput="trackBudget()">
+                </div>
+                <div class="form-group">
+                    <label for="otherExpenses">Miscellaneous</label>
+                    <input type="number" id="otherExpenses" class="form-control" placeholder="150" min="0" oninput="trackBudget()">
+                </div>
+            </div>
+            <!-- Removed button, added oninput to fields -->
+            <div id="budgetResults" class="results"></div>
+        </section>
+
+        <!-- Discount Section -->
+        <section id="discount-calculator" class="tool-section">
+            <h2>Value Adjustment Calculator</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="originalPrice">Original Valuation</label>
+                    <input type="number" id="originalPrice" class="form-control" placeholder="100" min="0" oninput="calculateDiscount()">
+                </div>
+                <div class="form-group">
+                    <label for="discountPercentage">Adjustment Percentage (%)</label>
+                    <input type="number" id="discountPercentage" class="form-control" placeholder="10" min="0" max="100" step="0.1" oninput="calculateDiscount()">
+                </div>
+            </div>
+            <!-- Removed button, added oninput to fields -->
+            <div id="discountResults" class="results"></div>
+        </section>
+    </div>
+
+    <script>
+        // Trigger initial calculation check if values exist (optional, mostly for reload if browsers cache inputs)
+        window.onload = function() {
+            // Check if fields have values to show initial state if needed, or leave blank
+        }
+
+        // --- Savings Calculator Logic ---
+        function calculateSavings() {
+            const currentSavings = parseFloat(document.getElementById('currentSavings').value);
+            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
+            const annualInterestRate = parseFloat(document.getElementById('annualInterestRate').value);
+            const yearsToSave = parseFloat(document.getElementById('yearsToSave').value);
+
+            const savingsResultsDiv = document.getElementById('savingsResults');
+            
+            // Only calculate if we have valid inputs for at least some fields to avoid NaN flashes
+            if(isNaN(currentSavings) && isNaN(monthlyContribution)) {
+                savingsResultsDiv.style.display = 'none';
+                return;
+            }
+            
+            // Defaults for calculation even if some fields are empty
+            const cSavings = isNaN(currentSavings) ? 0 : currentSavings;
+            const mContribution = isNaN(monthlyContribution) ? 0 : monthlyContribution;
+            const aRate = isNaN(annualInterestRate) ? 0 : annualInterestRate;
+            const years = isNaN(yearsToSave) ? 0 : yearsToSave;
+
+            const months = years * 12;
+            const monthlyInterestRate = aRate / 100 / 12;
+
+            let futureValue = cSavings;
+            for (let i = 0; i < months; i++) {
+                futureValue = (futureValue + mContribution) * (1 + monthlyInterestRate);
+            }
+
+            const totalContributions = cSavings + (mContribution * months);
+            const interestEarned = futureValue - totalContributions;
+
+            savingsResultsDiv.innerHTML = `
+                <p><span>Projected Value (End of Term)</span> <strong>$${futureValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                <p><span>Total Principal Invested</span> <strong>$${totalContributions.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                <p><span>Total Interest Accrued</span> <strong>$${interestEarned.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                <span class="note">* Note: Projections are estimates based on constant monthly compounding.</span>
+            `;
+            savingsResultsDiv.className = 'results success';
+            savingsResultsDiv.style.display = 'block';
+        }
+
+        // --- Budget Tracker Logic ---
+        function trackBudget() {
+            const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value);
+            
+            // Get expenses, default to 0 if empty
+            const housingCost = parseFloat(document.getElementById('housingCost').value) || 0;
+            const foodCost = parseFloat(document.getElementById('foodCost').value) || 0;
+            const transportationCost = parseFloat(document.getElementById('transportationCost').value) || 0;
+            const utilitiesCost = parseFloat(document.getElementById('utilitiesCost').value) || 0;
+            const entertainmentCost = parseFloat(document.getElementById('entertainmentCost').value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
+
+            const budgetResultsDiv = document.getElementById('budgetResults');
+
+            if (isNaN(monthlyIncome)) {
+                budgetResultsDiv.style.display = 'none';
+                return;
+            }
+
+            const mIncome = isNaN(monthlyIncome) ? 0 : monthlyIncome;
+            const totalExpenses = housingCost + foodCost + transportationCost + utilitiesCost + entertainmentCost + otherExpenses;
+            const remainingBalance = mIncome - totalExpenses;
+            const savingsRate = (mIncome > 0) ? (remainingBalance / mIncome) * 100 : 0;
+
+            let resultHtml = `
+                <p><span>Total Monthly Inflow</span> <strong>$${mIncome.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                <p><span>Total Monthly Outflow</span> <strong>$${totalExpenses.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                <hr>
+                <p><span>Net Balance</span> <strong>$${remainingBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                <p><span>Liquidity Ratio (Savings Rate)</span> <strong>${savingsRate.toFixed(1)}%</strong></p>
+            `;
+
+            let statusClass = 'results';
+            let noteText = '';
+
+            if (remainingBalance < 0) {
+                noteText = `Alert: Monthly deficit detected of $${Math.abs(remainingBalance).toLocaleString('en-US', {minimumFractionDigits: 2})}.`;
+                statusClass += ' error';
+            } else if (remainingBalance === 0) {
+                noteText = `Notice: Zero-sum budget detected.`;
+                statusClass += ' warning';
+            } else {
+                noteText = `Status: Surplus detected.`;
+                statusClass += ' success';
+            }
+
+            resultHtml += `<span class="note">${noteText}</span>`;
+            budgetResultsDiv.innerHTML = resultHtml;
+            budgetResultsDiv.className = statusClass;
+            budgetResultsDiv.style.display = 'block';
+        }
+
+        // --- Discount Calculator Logic ---
+        function calculateDiscount() {
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+            const discountPercentage = parseFloat(document.getElementById('discountPercentage').value);
+
+            const discountResultsDiv = document.getElementById('discountResults');
+            let resultsClass = 'results';
+
+            if (isNaN(originalPrice) && isNaN(discountPercentage)) {
+                 discountResultsDiv.style.display = 'none';
+                 return;
+            }
+
+            // Defaults if one is filled but not the other
+            const price = isNaN(originalPrice) ? 0 : originalPrice;
+            const discount = isNaN(discountPercentage) ? 0 : discountPercentage;
+
+            if (price < 0) {
+                discountResultsDiv.innerHTML = `<span class="note">Input Error: Positive valuation required.</span>`;
+                resultsClass += ' error';
+            } else if (discount < 0 || discount > 100) {
+                discountResultsDiv.innerHTML = `<span class="note">Input Error: 0-100% required.</span>`;
+                resultsClass += ' error';
+            } else {
+                const discountAmount = price * (discount / 100);
+                const finalPrice = price - discountAmount;
+
+                discountResultsDiv.innerHTML = `
+                    <p><span>Original Valuation</span> <strong>$${price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                    <p><span>Adjustment Factor</span> <strong>${discount.toFixed(2)}%</strong></p>
+                    <hr>
+                    <p><span>Reduction Value</span> <strong>$${discountAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                    <p><span>Adjusted Final Value</span> <strong>$${finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></p>
+                `;
+                resultsClass += ' success';
+            }
+            discountResultsDiv.className = resultsClass;
+            discountResultsDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
